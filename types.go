@@ -1,8 +1,8 @@
 package mpesa
 
 const (
-	APP_KEY    = "GvzjNnYgNJtwgwfLBkZh65VPwfuKvs0V"
-	APP_SECRET = "oOpJICRVlyrGSAkM"
+	APP_KEY    = "Qw8bXC5mGb5AojoSJPwttePaAgrtWGIg"
+	APP_SECRET = "LUC6Du3AoZOlIdF1"
 )
 
 type (
