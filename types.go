@@ -5,8 +5,10 @@ const (
 	APP_SECRET = "LUC6Du3AoZOlIdF1"
 )
 
+const endpoint = "https://sandbox.safaricom.co.ke"
+
 type (
-	STKPushSimulationD struct {
+	MpesaSTKPushBones struct {
 		BusinessShortCode,
 		Password,
 		Timestamp,
@@ -24,5 +26,10 @@ type (
 	AuthResponse struct {
 		Access_token string
 		Expires_in   string
+	}
+
+	Credetials struct {
+		APP_KEY,
+		APP_SECRET string
 	}
 )

@@ -10,17 +10,17 @@ import (
 	"time"
 )
 
-func authenticate() string {
+func authenticateRequest(c *Credetials) string {
 	var AuthResp AuthResponse
 
 	client := Client()
 
-	req, err := http.NewRequest("GET", "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials", nil)
+	req, err := http.NewRequest("GET", endpoint+"/oauth/v1/generate?grant_type=client_credentials", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	req.SetBasicAuth(APP_KEY, APP_SECRET)
+	req.SetBasicAuth(c.APP_KEY, c.APP_SECRET)
 	req.Header.Add("cache-control", "no-cache")
 	response, err := client.Do(req)
 
@@ -32,7 +32,7 @@ func authenticate() string {
 
 }
 
-func STKPushSimulation(s *STKPushSimulationD) {
+func MpesaSTKPush(s *MpesaSTKPushBones, c *Credetials) {
 
 	var i interface{}
 
@@ -43,12 +43,12 @@ func STKPushSimulation(s *STKPushSimulationD) {
 		log.Fatal(err)
 	}
 
-	req, err := http.NewRequest("POST", "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest", bytes.NewBuffer(b))
+	req, err := http.NewRequest("POST", endpoint+"/mpesa/stkpush/v1/processrequest", bytes.NewBuffer(b))
 	if err != nil {
 		log.Fatal(err)
 	}
 	req.Header.Set("content-type", "application/json")
-	req.Header.Set("authorization", "Bearer "+authenticate())
+	req.Header.Set("authorization", "Bearer "+authenticateRequest(c))
 	req.Header.Set("cache-control", "no-cache")
 
 	response, err := client.Do(req)
