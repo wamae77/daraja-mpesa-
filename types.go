@@ -1,10 +1,5 @@
 package mpesa
 
-const (
-	APP_KEY    = "Qw8bXC5mGb5AojoSJPwttePaAgrtWGIg"
-	APP_SECRET = "LUC6Du3AoZOlIdF1"
-)
-
 const endpoint = "https://sandbox.safaricom.co.ke"
 
 type (

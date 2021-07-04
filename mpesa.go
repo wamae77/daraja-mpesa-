@@ -2,6 +2,7 @@ package mpesa
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -70,6 +71,18 @@ func GetResponseBody(h *http.Response, i interface{}) {
 	err1 := json.Unmarshal(bodyText, &i)
 	if err1 != nil {
 		log.Fatal(err1)
+	}
+}
+
+func GenerateEncodedPassword(shortcode, passkey string) map[string]string {
+	mytime := time.Now()
+	formattedTime := mytime.Format("20060102150405")
+	msg := shortcode + passkey + formattedTime
+	encodedPassword := base64.StdEncoding.EncodeToString([]byte(msg))
+
+	return map[string]string{
+		"encoded":       encodedPassword,
+		"formattedTime": formattedTime,
 	}
 }
 
