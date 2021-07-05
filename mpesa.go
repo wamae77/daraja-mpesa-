@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -33,7 +32,7 @@ func authenticateRequest(c *Credetials) string {
 
 }
 
-func MpesaSTKPush(s *MpesaSTKPushBones, c *Credetials) {
+func MpesaSTKPush(s *MpesaSTKPushBones, c *Credetials) (interface{}, error) {
 
 	var i interface{}
 
@@ -41,12 +40,12 @@ func MpesaSTKPush(s *MpesaSTKPushBones, c *Credetials) {
 
 	b, err := json.Marshal(s)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	req, err := http.NewRequest("POST", endpoint+"/mpesa/stkpush/v1/processrequest", bytes.NewBuffer(b))
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	req.Header.Set("content-type", "application/json")
 	req.Header.Set("authorization", "Bearer "+authenticateRequest(c))
@@ -54,11 +53,11 @@ func MpesaSTKPush(s *MpesaSTKPushBones, c *Credetials) {
 
 	response, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	GetResponseBody(response, &i)
-	fmt.Println(i)
+	return i, nil
 }
 
 func GetResponseBody(h *http.Response, i interface{}) {
