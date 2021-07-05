@@ -60,6 +60,34 @@ func MpesaSTKPush(s *MpesaSTKPushBones, c *Credetials) (interface{}, error) {
 	return i, nil
 }
 
+func MpesaSTKPushTransactionStatus(s *StkPushTransactionStatusBones, c *Credetials) (interface{}, error) {
+
+	var i interface{}
+
+	client := Client()
+
+	b, err := json.Marshal(s)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", endpoint+"/mpesa/stkpushquery/v1/query", bytes.NewBuffer(b))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("authorization", "Bearer "+authenticateRequest(c))
+	req.Header.Set("content-type", "application/json")
+	req.Header.Set("Timestamp", s.Timestamp)
+
+	response, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	GetResponseBody(response, &i)
+	return i, nil
+}
+
 func GetResponseBody(h *http.Response, i interface{}) {
 
 	bodyText, err := ioutil.ReadAll(h.Body)

@@ -27,4 +27,12 @@ type (
 		APP_KEY,
 		APP_SECRET string
 	}
+
+	StkPushTransactionStatusBones struct {
+		Password          string
+		Timestamp         string
+		CheckoutRequestID string
+		PhoneNumber       string
+		ShortCode         string
+	}
 )
