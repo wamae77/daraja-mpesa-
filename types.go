@@ -33,6 +33,6 @@ type (
 		Timestamp         string
 		CheckoutRequestID string
 		PhoneNumber       string
-		ShortCode         string
+		BusinessShortCode string
 	}
 )
