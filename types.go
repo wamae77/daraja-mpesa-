@@ -33,6 +33,14 @@ type (
 		Timestamp         string
 		CheckoutRequestID string
 		PhoneNumber       string
-		BusinessShortCode string
+		ShortCode         string
+	}
+
+	StkPushResponse struct {
+		CheckoutRequestID,
+		MerchantRequestID,
+		ResponseCode,
+		ResponseDescription,
+		ResultCode string
 	}
 )
