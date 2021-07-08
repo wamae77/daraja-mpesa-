@@ -35,12 +35,4 @@ type (
 		PhoneNumber       string
 		ShortCode         string
 	}
-
-	StkPushResponse struct {
-		CheckoutRequestID,
-		MerchantRequestID,
-		ResponseCode,
-		ResponseDescription,
-		ResultCode string
-	}
 )

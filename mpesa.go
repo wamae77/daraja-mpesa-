@@ -60,9 +60,9 @@ func MpesaSTKPush(s *MpesaSTKPushBones, c *Credetials) (interface{}, error) {
 	return i, nil
 }
 
-func MpesaSTKPushTransactionStatus(s *StkPushTransactionStatusBones, c *Credetials) (*StkPushResponse, error) {
+func MpesaSTKPushTransactionStatus(s *StkPushTransactionStatusBones, c *Credetials) (interface{}, error) {
 
-	var i StkPushResponse
+	var i interface{}
 
 	client := Client()
 
@@ -85,10 +85,10 @@ func MpesaSTKPushTransactionStatus(s *StkPushTransactionStatusBones, c *Credetia
 	}
 
 	GetResponseBody(response, &i)
-	return &i, nil
+	return i, nil
 }
 
-func GetResponseBody(h *http.Response, i *StkPushResponse) {
+func GetResponseBody(h *http.Response, i interface{}) {
 
 	bodyText, err := ioutil.ReadAll(h.Body)
 	if err != nil {
