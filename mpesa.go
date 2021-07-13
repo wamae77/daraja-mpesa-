@@ -10,12 +10,13 @@ import (
 	"time"
 )
 
-func authenticateRequest(c *Credetials) string {
+func RequestAuthentication(c *Credetials) string {
 	var AuthResp AuthResponse
 
 	client := Client()
 
 	req, err := http.NewRequest("GET", endpoint+"/oauth/v1/generate?grant_type=client_credentials", nil)
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -27,40 +28,43 @@ func authenticateRequest(c *Credetials) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	GetResponseBody(response, &AuthResp)
+	DecodeResponseBody(response, &AuthResp)
 	return AuthResp.Access_token
 
 }
 
-func MpesaSTKPush(s *MpesaSTKPushBones, c *Credetials) (interface{}, error) {
+func StkPush(s *StkPushRequest, c *Credetials) (interface{}, error) {
 
 	var i interface{}
 
 	client := Client()
 
-	b, err := json.Marshal(s)
+	encoded_data, err := json.Marshal(s)
+
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", endpoint+"/mpesa/stkpush/v1/processrequest", bytes.NewBuffer(b))
+	req, err := http.NewRequest("POST", endpoint+"/mpesa/stkpush/v1/processrequest", bytes.NewBuffer(encoded_data))
+
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Set("content-type", "application/json")
-	req.Header.Set("authorization", "Bearer "+authenticateRequest(c))
+	req.Header.Set("authorization", "Bearer "+RequestAuthentication(c))
 	req.Header.Set("cache-control", "no-cache")
 
 	response, err := client.Do(req)
+
 	if err != nil {
 		return nil, err
 	}
 
-	GetResponseBody(response, &i)
-	return i, nil
+	DecodeResponseBody(response, &i)
+	return &i, nil
 }
 
-func MpesaSTKPushTransactionStatus(s *StkPushTransactionStatusBones, c *Credetials) (interface{}, error) {
+func StkPushTransactionStatus(s *StkPushStatusRequest, c *Credetials) (interface{}, error) {
 
 	var i interface{}
 
@@ -75,7 +79,7 @@ func MpesaSTKPushTransactionStatus(s *StkPushTransactionStatusBones, c *Credetia
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("authorization", "Bearer "+authenticateRequest(c))
+	req.Header.Set("authorization", "Bearer "+RequestAuthentication(c))
 	req.Header.Set("content-type", "application/json")
 	req.Header.Set("Timestamp", s.Timestamp)
 
@@ -84,21 +88,22 @@ func MpesaSTKPushTransactionStatus(s *StkPushTransactionStatusBones, c *Credetia
 		return nil, err
 	}
 
-	GetResponseBody(response, &i)
-	return i, nil
+	DecodeResponseBody(response, &i)
+	return &i, nil
 }
 
-func GetResponseBody(h *http.Response, i interface{}) {
+func DecodeResponseBody(h *http.Response, i interface{}) error {
 
-	bodyText, err := ioutil.ReadAll(h.Body)
+	body, err := ioutil.ReadAll(h.Body)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	err1 := json.Unmarshal(bodyText, &i)
+	err1 := json.Unmarshal(body, &i)
 	if err1 != nil {
-		log.Fatal(err1)
+		return err1
 	}
+	return nil
 }
 
 func GenerateEncodedPassword(shortcode, passkey string) map[string]string {

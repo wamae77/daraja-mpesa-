@@ -3,7 +3,7 @@ package mpesa
 const endpoint = "https://sandbox.safaricom.co.ke"
 
 type (
-	MpesaSTKPushBones struct {
+	StkPushRequest struct {
 		BusinessShortCode,
 		Password,
 		Timestamp,
@@ -28,7 +28,7 @@ type (
 		APP_SECRET string
 	}
 
-	StkPushTransactionStatusBones struct {
+	StkPushStatusRequest struct {
 		Password          string
 		Timestamp         string
 		CheckoutRequestID string
