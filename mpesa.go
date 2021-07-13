@@ -33,7 +33,7 @@ func RequestAuthentication(c *Credetials) string {
 
 }
 
-func StkPush(s *StkPushRequest, c *Credetials) (interface{}, error) {
+func StkPush(s *StkPushRequest, c *Credetials) (*interface{}, error) {
 
 	var i interface{}
 
@@ -64,7 +64,7 @@ func StkPush(s *StkPushRequest, c *Credetials) (interface{}, error) {
 	return &i, nil
 }
 
-func StkPushTransactionStatus(s *StkPushStatusRequest, c *Credetials) (interface{}, error) {
+func StkPushTransactionStatus(s *StkPushStatusRequest, c *Credetials) (*interface{}, error) {
 
 	var i interface{}
 
