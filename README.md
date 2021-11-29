@@ -1,4 +1,5 @@
-# mpesago
+# mpesa Go
 
-#--Go implementation of the mpesa Daraja Mpesa api----
-#New to Golang ,share your mind if any changes need to be made. 
+#--Go implementation of the Mpesa Daraja  STK PUSH api----
+
+simple Safaricom MPESA STK PUSH In Golang
