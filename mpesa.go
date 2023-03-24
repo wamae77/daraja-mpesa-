@@ -5,12 +5,11 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
 )
 
-func RequestAuthentication(c *Credetials) string {
+func RequestAuthentication(c *Credetials) (*string, error) {
 	var AuthResp AuthResponse
 
 	client := Client()
@@ -18,7 +17,7 @@ func RequestAuthentication(c *Credetials) string {
 	req, err := http.NewRequest("GET", endpoint+"/oauth/v1/generate?grant_type=client_credentials", nil)
 
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	req.SetBasicAuth(c.APP_KEY, c.APP_SECRET)
@@ -26,14 +25,14 @@ func RequestAuthentication(c *Credetials) string {
 	response, err := client.Do(req)
 
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	DecodeResponseBody(response, &AuthResp)
-	return AuthResp.Access_token
+	return &AuthResp.Access_token, nil
 
 }
 
-func StkPush(s *StkPushRequest, c *Credetials) (interface{}, error) {
+func StkPush(s StkPushRequest, token string) (interface{}, error) {
 
 	var i interface{}
 
@@ -50,8 +49,9 @@ func StkPush(s *StkPushRequest, c *Credetials) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	req.Header.Set("content-type", "application/json")
-	req.Header.Set("authorization", "Bearer "+RequestAuthentication(c))
+	req.Header.Set("authorization", "Bearer "+token)
 	req.Header.Set("cache-control", "no-cache")
 
 	response, err := client.Do(req)
@@ -64,7 +64,7 @@ func StkPush(s *StkPushRequest, c *Credetials) (interface{}, error) {
 	return i, nil
 }
 
-func StkPushTransactionStatus(s *StkPushStatusRequest, c *Credetials) (interface{}, error) {
+func StkPushTransactionStatus(s StkPushStatusRequest, token string) (interface{}, error) {
 
 	var i interface{}
 
@@ -79,7 +79,7 @@ func StkPushTransactionStatus(s *StkPushStatusRequest, c *Credetials) (interface
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("authorization", "Bearer "+RequestAuthentication(c))
+	req.Header.Set("authorization", "Bearer "+token)
 	req.Header.Set("content-type", "application/json")
 	req.Header.Set("Timestamp", s.Timestamp)
 
