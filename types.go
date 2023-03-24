@@ -58,6 +58,15 @@ type (
 		CustomerMessage     string
 	}
 
+	StkPushTransactionQueryResponse struct {
+		ResponseCode        string
+		ResponseDescription string
+		MerchantRequestID   string
+		CheckoutRequestID   string
+		ResultCode          string
+		ResultDesc          string
+	}
+
 	BusinessToBusinessRequest struct {
 		Initiator              string
 		SecurityCredential     string

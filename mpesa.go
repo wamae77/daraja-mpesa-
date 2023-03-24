@@ -32,9 +32,9 @@ func RequestAuthentication(c *Credetials) (*string, error) {
 
 }
 
-func StkPush(s StkPushRequest, token string) (interface{}, error) {
+func StkPush(s StkPushRequest, token string) (*LipaNaMpesaOnlineApiResponse, error) {
 
-	var i interface{}
+	var i LipaNaMpesaOnlineApiResponse
 
 	client := Client()
 
@@ -61,7 +61,7 @@ func StkPush(s StkPushRequest, token string) (interface{}, error) {
 	}
 
 	DecodeResponseBody(response, &i)
-	return i, nil
+	return &i, nil
 }
 
 func CustomerToBusiness(request CustomerToBusinessRequest, token string) (*CustomerToBusinessResponse, error) {
@@ -93,9 +93,9 @@ func CustomerToBusiness(request CustomerToBusinessRequest, token string) (*Custo
 	return &i, nil
 }
 
-func StkPushTransactionStatus(s StkPushStatusRequest, token string) (*LipaNaMpesaOnlineApiResponse, error) {
+func StkPushTransactionStatus(s StkPushStatusRequest, token string) (*StkPushTransactionQueryResponse, error) {
 
-	var i LipaNaMpesaOnlineApiResponse
+	var i StkPushTransactionQueryResponse
 
 	client := Client()
 
