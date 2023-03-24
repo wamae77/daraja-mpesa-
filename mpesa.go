@@ -64,9 +64,38 @@ func StkPush(s StkPushRequest, token string) (interface{}, error) {
 	return i, nil
 }
 
-func StkPushTransactionStatus(s StkPushStatusRequest, token string) (interface{}, error) {
+func CustomerToBusiness(request CustomerToBusinessRequest, token string) (*CustomerToBusinessResponse, error) {
 
-	var i interface{}
+	var i CustomerToBusinessResponse
+
+	client := Client()
+
+	body, err := json.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", endpoint+"/mpesa/c2b/v1/simulate", bytes.NewBuffer(body))
+
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("authorization", "Bearer "+token)
+	req.Header.Set("content-type", "application/json")
+
+	response, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	DecodeResponseBody(response, &i)
+	return &i, nil
+}
+
+func StkPushTransactionStatus(s StkPushStatusRequest, token string) (*LipaNaMpesaOnlineApiResponse, error) {
+
+	var i LipaNaMpesaOnlineApiResponse
 
 	client := Client()
 
@@ -82,6 +111,34 @@ func StkPushTransactionStatus(s StkPushStatusRequest, token string) (interface{}
 	req.Header.Set("authorization", "Bearer "+token)
 	req.Header.Set("content-type", "application/json")
 	req.Header.Set("Timestamp", s.Timestamp)
+
+	response, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	DecodeResponseBody(response, &i)
+	return &i, nil
+}
+
+func Business2Business(request BusinessToBusinessRequest, token string) (interface{}, error) {
+
+	var i interface{}
+
+	client := Client()
+
+	body, err := json.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", endpoint+"/mpesa/b2b/v1/paymentrequest", bytes.NewBuffer(body))
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("authorization", "Bearer "+token)
+	req.Header.Set("content-type", "application/json")
 
 	response, err := client.Do(req)
 	if err != nil {

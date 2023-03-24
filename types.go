@@ -35,4 +35,41 @@ type (
 		PhoneNumber       string
 		BusinessShortCode string
 	}
+
+	CustomerToBusinessRequest struct {
+		ShortCode     string
+		CommandID     string
+		Amount        string
+		Msisdn        string
+		BillRefNumber string
+	}
+
+	CustomerToBusinessResponse struct {
+		ConversationID          string
+		OriginatorCoversationID string
+		ResponseDescription     string
+	}
+
+	LipaNaMpesaOnlineApiResponse struct {
+		MerchantRequestID   string
+		CheckoutRequestID   string
+		ResponseCode        string
+		ResponseDescription string
+		CustomerMessage     string
+	}
+
+	BusinessToBusinessRequest struct {
+		Initiator              string
+		SecurityCredential     string
+		CommandID              string
+		SenderIdentifierType   string
+		RecieverIdentifierType string
+		Amount                 string
+		PartyA                 string
+		PartyB                 string
+		AccountReference       string
+		Remarks                string
+		QueueTimeOutURL        string
+		ResultURL              string
+	}
 )
