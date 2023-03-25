@@ -24,8 +24,8 @@ type (
 	}
 
 	Credetials struct {
-		APP_KEY,
-		APP_SECRET string
+		ConsumerKey,
+		ConsumerSecret string
 	}
 
 	StkPushStatusRequest struct {

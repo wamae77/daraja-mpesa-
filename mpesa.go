@@ -20,7 +20,7 @@ func RequestAuthentication(c *Credetials) (*string, error) {
 		return nil, err
 	}
 
-	req.SetBasicAuth(c.APP_KEY, c.APP_SECRET)
+	req.SetBasicAuth(c.ConsumerKey, c.ConsumerSecret)
 	req.Header.Add("cache-control", "no-cache")
 	response, err := client.Do(req)
 
