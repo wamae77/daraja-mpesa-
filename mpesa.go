@@ -163,16 +163,13 @@ func DecodeResponseBody(h *http.Response, i interface{}) error {
 	return nil
 }
 
-func GenerateEncodedPassword(shortcode, passkey string) map[string]string {
+func GenerateEncodedPassword(shortcode, passkey string) (string, string) {
 	mytime := time.Now()
 	formattedTime := mytime.Format("20060102150405")
 	msg := shortcode + passkey + formattedTime
 	encodedPassword := base64.StdEncoding.EncodeToString([]byte(msg))
 
-	return map[string]string{
-		"encoded":       encodedPassword,
-		"formattedTime": formattedTime,
-	}
+	return encodedPassword, formattedTime
 }
 
 func Client() http.Client {
